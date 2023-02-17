@@ -119,29 +119,29 @@ export default function Home() {
             </p>
           </div>
         </div>
-        <div class="inline-flex flex-col space-y-2.5 items-start justify-start w-full">
-          <p class="text-base font-semibold tracking-wide leading-normal text-gray-800">
+        <div className="inline-flex flex-col space-y-2.5 items-start justify-start w-full">
+          <p className="text-base font-semibold tracking-wide leading-normal text-gray-800">
             Most spent on
           </p>
-          <div class="inline-flex space-x-32 items-center justify-between w-full">
-            <div class="flex space-x-3 items-center justify-start">
+          <div className="inline-flex space-x-32 items-center justify-between w-full">
+            <div className="flex space-x-3 items-center justify-start">
               <div className="flex w-12 h-12 items-center justify-center flex-1 p-3 bg-gray-200 rounded-xl">
                 <RiShoppingCart2Fill color="red" size={24} />
               </div>
-              <div class="inline-flex flex-col space-y-0.5 items-start justify-start">
-                <p class="text-sm font-semibold tracking-wide leading-snug text-gray-800">
+              <div className="inline-flex flex-col space-y-0.5 items-start justify-start">
+                <p className="text-sm font-semibold tracking-wide leading-snug text-gray-800">
                   Shopping
                 </p>
-                <p class="text-xs font-medium tracking-wide leading-tight text-gray-400">
+                <p className="text-xs font-medium tracking-wide leading-tight text-gray-400">
                   Clothes, Gadgets etc
                 </p>
               </div>
             </div>
-            <p class="text-base font-semibold tracking-wide leading-normal text-gray-800">
+            <p className="text-base font-semibold tracking-wide leading-normal text-gray-800">
               ₹433,00
             </p>
           </div>
-          <hr class="w-full h-0.5 border-gray-100 pb-4" />
+          <hr className="w-full h-0.5 border-gray-100 pb-4" />
           <div className="border-gray-200 p-4 border rounded-2xl ">
             <Bar options={options} data={data} />
           </div>
