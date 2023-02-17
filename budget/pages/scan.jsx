@@ -37,10 +37,16 @@ const Scan = () => {
   const { classes } = useStyles();
   const [result, setResult] = useState("No result");
   const [value, setValue] = useState("Shopping");
+  const date = new Date();
+  let day = date.getDate();
+  let month = date.getMonth() + 1;
+  let year = date.getFullYear();
+  let currentDate = `${day}-${month}-${year}`;
   const [payee, setPayee] = useState({
     upi: false,
     name: false,
     amount: false,
+    date: currentDate,
   });
   const [amount, setAmount] = useState(false);
   const [upiUrl, setUpiUrl] = useState(null);
@@ -56,6 +62,7 @@ const Scan = () => {
     if (result) {
       const url = new URL(result.data);
       setPayee({
+        ...payee,
         upi: url.searchParams.get("pa"),
         name: url.searchParams.get("pn"),
         amount: false,
@@ -110,7 +117,12 @@ const Scan = () => {
                 onChange={(value) => {
                   setAmount(value);
                   upiUrl.searchParams.append("am", "value");
-                  setPayee({ ...payee, amount: value, upiUrl: upiUrl });
+                  setPayee({
+                    ...payee,
+                    amount: value,
+                    upiUrl: upiUrl,
+                    category: value,
+                  });
                   console.log(payee);
                 }}
                 value={amount}
@@ -133,7 +145,10 @@ const Scan = () => {
           radius="xl"
           size="xs"
           value={value}
-          onChange={setValue}
+          onChange={(value) => {
+            setValue(value);
+            setPayee({ ...payee, category: value });
+          }}
           data={["Shopping", "Food", "Travel", "Fun", "Medical", "Other"]}
           classNames={classes}
         />
@@ -152,7 +167,9 @@ const Scan = () => {
           }}
           className="w-full"
           value={note}
-          onChange={(event) => setNote(event.currentTarget.value)}
+          onChange={(event) => {
+            setNote(event.currentTarget.value);
+          }}
         />
         <Link href="/" className="font-bold text-blue-500">
           Paid using cash ?
