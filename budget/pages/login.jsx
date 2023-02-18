@@ -33,8 +33,8 @@ export default function Login() {
           </p>
         </div>
         <svg
-          className="w-full my-4"
-          //   width="80"
+          className="w-full h-12 my-4"
+          width="80"
           height="40"
           viewBox="0 0 41 11"
           fill="none"
