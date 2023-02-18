@@ -79,9 +79,10 @@ export default function Home() {
   useEffect(() => {
     (async () => {
       onAuthStateChanged(async (user) => {
-        if (!user ) {
+        setTimeout(() => {  if (!user ) {
           Router.push("/login");
-        }
+        }},1000)
+       
         const docSnap = await getDoc(doc(db, "users", user.uid));
         // setExpenses(arr);
 
