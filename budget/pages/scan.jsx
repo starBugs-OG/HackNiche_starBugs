@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import QrReader from "react-web-qr-reader";
 import {
   Button,
@@ -9,6 +9,9 @@ import {
 } from "@mantine/core";
 import Link from "next/link";
 import Router from "next/router";
+import { expense, addExpense } from "@/utils/expense.js";
+import uuid from "react-uuid";
+import { onAuthStateChanged } from "@/utils/auth";
 
 const useStyles = createStyles((theme) => ({
   root: {
@@ -36,7 +39,7 @@ const useStyles = createStyles((theme) => ({
 const Scan = () => {
   const { classes } = useStyles();
   const [result, setResult] = useState("No result");
-  const [value, setValue] = useState("Shopping");
+  const [category, setCategory] = useState("Shopping");
   const date = new Date();
   let day = date.getDate();
   let month = date.getMonth() + 1;
@@ -50,7 +53,15 @@ const Scan = () => {
   });
   const [amount, setAmount] = useState(false);
   const [upiUrl, setUpiUrl] = useState(null);
-  const [note, setNote] = useState(null);
+  const [note, setNote] = useState("");
+  const [user, setUser] = useState(null);
+
+  useEffect(() => {
+    onAuthStateChanged((user) => {
+      setUser(user);
+    });
+    console.log(user);
+  }, []);
 
   const delay = 500;
   const previewStyle = {
@@ -84,9 +95,19 @@ const Scan = () => {
       temp.searchParams.append("tn", note);
     }
 
-    setPayee({ ...payee, upiUrl: temp.href });
-    Router.push(temp.href);
+    // Router.push(temp.href);
+    save();
   };
+
+  async function save() {
+    const { upiUrl, ...rest } = payee;
+    const response = await addExpense(rest, user.uid);
+    console.log(response);
+    if (response) {
+        Router.push("/");
+      console.log("hey");
+    }
+  }
   return (
     <>
       <section className="w-full h-full items-center flex flex-col p-5 pt-0 gap-4 justify-between">
@@ -116,14 +137,13 @@ const Scan = () => {
                 withAsterisk
                 onChange={(value) => {
                   setAmount(value);
-                  upiUrl.searchParams.append("am", "value");
+                  upiUrl.searchParams.append("am", value);
                   setPayee({
                     ...payee,
                     amount: value,
                     upiUrl: upiUrl,
-                    category: value,
+                    category: category,
                   });
-                  console.log(payee);
                 }}
                 value={amount}
               />
@@ -144,9 +164,9 @@ const Scan = () => {
         <SegmentedControl
           radius="xl"
           size="xs"
-          value={value}
+          value={category}
           onChange={(value) => {
-            setValue(value);
+            setCategory(value);
             setPayee({ ...payee, category: value });
           }}
           data={["Shopping", "Food", "Travel", "Fun", "Medical", "Other"]}

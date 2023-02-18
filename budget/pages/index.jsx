@@ -15,6 +15,8 @@ import {
 } from "chart.js";
 import { Bar } from "react-chartjs-2";
 import { faker } from "@faker-js/faker";
+import { onAuthStateChanged } from "@/utils/auth";
+import { useState, useEffect } from "react";
 
 ChartJS.register(
   CategoryScale,
@@ -67,6 +69,12 @@ const data = {
 };
 
 export default function Home() {
+  const [user, setUser] = useState(null);
+
+  useEffect(() => {
+    onAuthStateChanged((user) => setUser(!!user));
+    console.log(user);
+  }, []);
   return (
     <>
       <Head>
@@ -76,12 +84,14 @@ export default function Home() {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <section className="w-full flex flex-col gap-10">
-        <div className="inline-flex space-x-20 items-center justify-between w-80">
+        <div className="inline-flex space-x-20 items-center justify-between w-full">
           <div className="flex space-x-2.5 items-center justify-start">
-            <img
-              className="w-12 h-12 border rounded-full"
-              src="https://cdn.discordapp.com/avatars/720862118244515860/15460e9328036466028b68522ee422ab.png?size=1024"
-            />
+            {user && (
+              <img
+                className="w-12 h-12 border rounded-full"
+                src="https://cdn.discordapp.com/avatars/720862118244515860/15460e9328036466028b68522ee422ab.png?size=1024"
+              />
+            )}
             <div className="inline-flex flex-col items-start justify-start">
               <p className="text-xs font-medium tracking-wide leading-tight text-gray-400">
                 Welcome back

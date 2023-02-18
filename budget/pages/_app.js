@@ -1,11 +1,15 @@
 import "@/styles/globals.css";
 import { MantineProvider, createEmotionCache } from "@mantine/core";
 import Layout from "@/components/Layout";
+import { useRouter } from "next/router";
+
 const myCache = createEmotionCache({
   key: "mantine",
   prepend: false,
 });
 export default function App({ Component, pageProps }) {
+  const { asPath } = useRouter();
+
   return (
     <MantineProvider
       withGlobalStyles
@@ -16,9 +20,13 @@ export default function App({ Component, pageProps }) {
         colorScheme: "light",
       }}
     >
-      <Layout>
+      {asPath != "/login" ? (
+        <Layout>
+          <Component {...pageProps} />
+        </Layout>
+      ) : (
         <Component {...pageProps} />
-      </Layout>
+      )}
     </MantineProvider>
   );
 }
