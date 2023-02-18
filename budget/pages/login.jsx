@@ -6,6 +6,7 @@ import { useRouter } from "next/router";
 export default function Login() {
   const [password, setPassword] = useState("");
   const [email, setEmail] = useState("");
+  const [view,setView] = useState("reg")
   const Router = useRouter();
 
   async function handleSubmit() {
@@ -72,7 +73,7 @@ export default function Login() {
             },
           }}
         />
-        <div className="flex items-center justify-between gap-4">
+        {view=="reg" && <div className="flex items-center justify-between gap-4">
           <NumberInput
             defaultValue={18}
             placeholder="21"
@@ -89,7 +90,7 @@ export default function Login() {
             size="lg"
             withAsterisk
           />
-        </div>
+        </div>}
         <Button
           color="dark"
           radius="md"
@@ -97,11 +98,15 @@ export default function Login() {
           className="w-full"
           styles={{ root: { width: "100%" } }}
         >
-          Sign Up
+          {view=="reg" ? "Sign Up" : "Sign In"}
         </Button>
-        <p className="text-base font-medium tracking-wide leading-normal text-center">
+        {view=="reg" ? <p className="text-base font-medium tracking-wide leading-normal text-center">
           Already have an account? Sign In
-        </p>
+        </p> : <p className="text-base font-medium tracking-wide leading-normal text-center">
+          Already have an account? Sign Up
+        </p>}
+
+        
       </div>
     </>
   );
