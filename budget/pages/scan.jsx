@@ -95,7 +95,7 @@ const Scan = () => {
       temp.searchParams.append("tn", note);
     }
 
-    // Router.push(temp.href);
+    Router.push(temp.href);
     save();
   };
 
