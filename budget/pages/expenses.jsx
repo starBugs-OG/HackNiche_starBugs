@@ -29,7 +29,7 @@ const expenses = () => {
     <section className="w-full grow flex flex-col gap-5">
       <div className="flex flex-col w-full gap-6">
         <p className="text-base font-semibold tracking-wide leading-normal pb-2 text-gray-800">
-          Most spent on
+          Expense History
         </p>
         {expense &&
           expense.map((doc) => (
