@@ -1,8 +1,9 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Button, PasswordInput, TextInput, NumberInput } from "@mantine/core";
 import { login, register } from "../utils/auth.js";
 
 import { useRouter } from "next/router";
+import { onAuthStateChanged } from "@/utils/auth";
 export default function Login() {
   const [password, setPassword] = useState("");
   const [email, setEmail] = useState("");
@@ -14,22 +15,33 @@ export default function Login() {
   const [view, setView] = useState("reg");
   const Router = useRouter();
 
-  async function handleSubmit() {
+  async function handleSubmit(e) {
+    e.preventDefault();
     const response = await register(email, password, age, income, name);
     if (response) {
       Router.push("/");
       console.log("hey");
     }
   }
+  useEffect(() => {
+    onAuthStateChanged(async (user) => {
+      if (user) {
+        Router.push("/");
+      }
+    });
+  }, []);
   return (
     <>
-      <div className="flex flex-col w-full h-screen justify-end p-5 gap-8">
+      <form
+        onSubmit={handleSubmit}
+        className="flex flex-col w-full h-screen justify-end p-5 gap-8"
+      >
         <div className="inline-flex flex-col pb-4  w-full self-start">
           <p className="text-2xl font-semibold tracking-wide leading-loose text-gray-800">
             Hi, Welcome Back! 👋
           </p>
           <p className="text-sm tracking-wide leading-snug text-gray-500">
-            Lorem ipsum dolor sit amet, consectetur
+            One app to solve all your financial woes
           </p>
         </div>
         <svg
@@ -46,6 +58,7 @@ export default function Login() {
           />
         </svg>
         <TextInput
+        required
           placeholder="John Doe"
           label="Full Name"
           radius="lg"
@@ -64,6 +77,7 @@ export default function Login() {
           }}
         />
         <TextInput
+        required
           placeholder="jacob@gmail.com"
           label="Email Address"
           radius="lg"
@@ -82,6 +96,7 @@ export default function Login() {
           }}
         />
         <PasswordInput
+        required
           placeholder="*******"
           label="Password"
           radius="lg"
@@ -102,7 +117,8 @@ export default function Login() {
         {view == "reg" && (
           <div className="flex items-center justify-between gap-4">
             <NumberInput
-              defaultValue={18}
+            required
+              //   defaultValue={18}
               placeholder="21"
               label="Your age"
               radius="lg"
@@ -112,7 +128,8 @@ export default function Login() {
               onChange={(value) => setAge(value)}
             />
             <NumberInput
-              defaultValue={10000}
+            required
+              //   defaultValue={10000}
               placeholder="15000"
               label="Income"
               radius="lg"
@@ -128,7 +145,7 @@ export default function Login() {
           radius="md"
           size="lg"
           className="w-full"
-          onClick={handleSubmit}
+          type="submit"
           styles={{ root: { width: "100%" } }}
         >
           {view == "reg" ? "Sign Up" : "Sign In"}
@@ -142,7 +159,7 @@ export default function Login() {
             Already have an account? Sign Up
           </p>
         )}
-      </div>
+      </form>
     </>
   );
 }

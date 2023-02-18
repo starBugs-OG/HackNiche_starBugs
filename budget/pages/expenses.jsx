@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { RiShoppingCart2Fill } from "react-icons/ri";
+import { RiShoppingCart2Fill, RiCoupon2Line, RiRestaurantLine, RiCarWashingFill, RiEmotionLaughLine, RiHospitalLine, RiRunLine } from "react-icons/ri";
 import { collection, getDocs } from "firebase/firestore";
 import { onAuthStateChanged } from "@/utils/auth";
 import { db } from "@/utils/firebaseService";
@@ -7,7 +7,14 @@ import { db } from "@/utils/firebaseService";
 const expenses = () => {
   const [user, setUser] = useState(null);
   const [expense, setExpenses] = useState(null);
-
+  const data = {
+    Shopping: <RiShoppingCart2Fill color="red" size={24} />,
+    Food: <RiRestaurantLine color="orange" size={24} />,
+    Travel: <RiCarWashingFill color="blue" size={24} />,
+    Fun: <RiEmotionLaughLine color="yellow" size={24} />,
+    Medical: <RiHospitalLine color="green" size={24} />,
+    Other: <RiRunLine color="black" size={24} />,
+  };
   useEffect(() => {
     (async () => {
       onAuthStateChanged(async (user) => {
@@ -36,7 +43,7 @@ const expenses = () => {
             <div className="inline-flex space-x-32 items-center justify-between w-full">
               <div className="flex space-x-3 items-center justify-start">
                 <div className="flex w-12 h-12 items-center justify-center flex-1 p-3 bg-gray-200 rounded-xl">
-                  <RiShoppingCart2Fill color="red" size={24} />
+                 {data[doc.category]}
                 </div>
                 <div className="inline-flex flex-col space-y-0.5 items-start justify-start">
                   <p className="text-sm font-semibold tracking-wide leading-snug text-gray-800">

@@ -11,8 +11,8 @@ import Link from "next/link";
 const Layout = ({ children }) => {
   return (
     <div className="flex flex-col w-screen h-screen">
-      <main className="w-full h-full p-5">{children}</main>
-      <div className="flex w-full p-5 pb-2 items-center bg-white justify-between sticky bottom-0">
+      <main className="w-full h-full p-5 overflow-y-scroll">{children}</main>
+      <div className="flex w-full p-5 pb-2 items-center bg-white justify-between sticky bottom-1">
         <Link href="/" className="p-2">
           <div className="flex flex-col w-12 h-12  text-xs text-center items-center">
             <RiHome2Line size={24} />
@@ -33,12 +33,12 @@ const Layout = ({ children }) => {
             <RiBankCard2Fill size={24} />
           </div>
         </Link>
-        <div className="p-2">
+        <Link href="/invest" className="p-2">
           <div className="flex flex-col w-12 h-12 text-xs text-center items-center">
             <RiBarChart2Line size={24} />
             Invest
           </div>
-        </div>
+        </Link>
         <Link href="/goal" className="p-2">
           <div className="flex flex-col w-12 h-12 text-xs text-center items-center">
             <RiCalendarCheckLine size={24} />

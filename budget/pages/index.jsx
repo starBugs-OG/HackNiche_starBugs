@@ -75,22 +75,32 @@ const data = {
 export default function Home() {
   const [user, setUser] = useState(null);
   const Router = useRouter();
-
+  // onAuthStateChanged(async (user) => {
+  //   if (user) {
+  //     const docSnap = await getDoc(doc(db, "users", user.uid));
+  //     setUser(docSnap.data());
+  //     console.log(docSnap.data());
+  //   } else {
+  //     Router.push("/login");
+  //   }
+  // });
+  // useEffect(() => {
+  //   onAuthStateChanged(async (user) => {
+  //     const docSnap = await getDoc(doc(db, "users", user.uid));
+  //     setUser(docSnap.data());
+  //   });
+  //   if (!user) Router.push("/login");
+  // }, []);
   useEffect(() => {
-    (async () => {
-      onAuthStateChanged(async (user) => {
-        setTimeout(() => {  if (!user ) {
-          Router.push("/login");
-        }},1000)
-       
-        const docSnap = await getDoc(doc(db, "users", user.uid));
-        // setExpenses(arr);
-
-        console.log(docSnap.data());
+    const unlisten = onAuthStateChanged(async (authUser) => {
+      if (authUser) {
+        const docSnap = await getDoc(doc(db, "users", authUser.uid));
         setUser(docSnap.data());
-      });
-    })();
-  }, []);
+      } else {
+        Router.push("/login");
+      }
+    });
+  },[Router]);
   return (
     <>
       <Head>
@@ -128,7 +138,7 @@ export default function Home() {
               <RiDownloadFill color="green" size={24} />
             </div>
             <p className="text-base font-semibold tracking-wide leading-normal text-gray-800">
-              ₹6,564.34
+              ₹{user && user.income}
             </p>
             <p className="text-sm font-medium tracking-wide leading-snug text-gray-400">
               Income
