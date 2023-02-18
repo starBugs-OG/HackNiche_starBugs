@@ -2,17 +2,19 @@ import { auth, db } from "./firebaseService";
 import {
   createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
+  signOut,
 } from "firebase/auth";
-import { addDoc, collection, setDoc,doc } from "firebase/firestore";
+import { addDoc, collection, setDoc, doc } from "firebase/firestore";
 
-export async function register(email, password, name, age) {
+export async function register(email, password, age, income, name) {
   createUserWithEmailAndPassword(auth, email, password)
     .then((credential) => {
       if (credential && credential.user) {
         setDoc(doc(db, "users", credential.user.uid), {
           email: email,
-          name: "Ojas",
-          age: 21,
+          age: age,
+          income: income,
+          name: name,
         });
       }
     })
@@ -38,3 +40,4 @@ export async function logout() {
 export function onAuthStateChanged(callback) {
   return auth.onAuthStateChanged(callback);
 }
+

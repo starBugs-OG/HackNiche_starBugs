@@ -6,11 +6,16 @@ import { useRouter } from "next/router";
 export default function Login() {
   const [password, setPassword] = useState("");
   const [email, setEmail] = useState("");
-  const [view,setView] = useState("reg")
+  const [name, setName] = useState("");
+
+  const [age, setAge] = useState(null);
+  const [income, setIncome] = useState(null);
+
+  const [view, setView] = useState("reg");
   const Router = useRouter();
 
   async function handleSubmit() {
-    const response = await register(email, password);
+    const response = await register(email, password, age, income, name);
     if (response) {
       Router.push("/");
       console.log("hey");
@@ -28,7 +33,7 @@ export default function Login() {
           </p>
         </div>
         <svg
-          className="w-full my-10"
+          className="w-full my-4"
           //   width="80"
           height="40"
           viewBox="0 0 41 11"
@@ -40,13 +45,32 @@ export default function Login() {
             fill="black"
           />
         </svg>
-
+        <TextInput
+          placeholder="John Doe"
+          label="Full Name"
+          radius="lg"
+          size="lg"
+          value={name}
+          onChange={(event) => setName(event.currentTarget.value)}
+          withAsterisk
+          className="w-full"
+          styles={{
+            input: {
+              "&:hover": { borderColor: "black" },
+              "&:focus": { borderColor: "black" },
+              background: "none",
+              borderWidth: "2px",
+            },
+          }}
+        />
         <TextInput
           placeholder="jacob@gmail.com"
           label="Email Address"
           radius="lg"
           size="lg"
           withAsterisk
+          value={email}
+          onChange={(event) => setEmail(event.currentTarget.value)}
           className="w-full"
           styles={{
             input: {
@@ -63,6 +87,8 @@ export default function Login() {
           radius="lg"
           size="lg"
           withAsterisk
+          value={password}
+          onChange={(event) => setPassword(event.currentTarget.value)}
           className="w-full"
           styles={{
             input: {
@@ -73,40 +99,49 @@ export default function Login() {
             },
           }}
         />
-        {view=="reg" && <div className="flex items-center justify-between gap-4">
-          <NumberInput
-            defaultValue={18}
-            placeholder="21"
-            label="Your age"
-            radius="lg"
-            size="lg"
-            withAsterisk
-          />
-          <NumberInput
-            defaultValue={10000}
-            placeholder="15000"
-            label="Income"
-            radius="lg"
-            size="lg"
-            withAsterisk
-          />
-        </div>}
+        {view == "reg" && (
+          <div className="flex items-center justify-between gap-4">
+            <NumberInput
+              defaultValue={18}
+              placeholder="21"
+              label="Your age"
+              radius="lg"
+              size="lg"
+              withAsterisk
+              value={age}
+              onChange={(value) => setAge(value)}
+            />
+            <NumberInput
+              defaultValue={10000}
+              placeholder="15000"
+              label="Income"
+              radius="lg"
+              size="lg"
+              value={income}
+              onChange={(value) => setIncome(value)}
+              withAsterisk
+            />
+          </div>
+        )}
         <Button
           color="dark"
           radius="md"
           size="lg"
           className="w-full"
+          onClick={handleSubmit}
           styles={{ root: { width: "100%" } }}
         >
-          {view=="reg" ? "Sign Up" : "Sign In"}
+          {view == "reg" ? "Sign Up" : "Sign In"}
         </Button>
-        {view=="reg" ? <p className="text-base font-medium tracking-wide leading-normal text-center">
-          Already have an account? Sign In
-        </p> : <p className="text-base font-medium tracking-wide leading-normal text-center">
-          Already have an account? Sign Up
-        </p>}
-
-        
+        {view == "reg" ? (
+          <p className="text-base font-medium tracking-wide leading-normal text-center">
+            Already have an account? Sign In
+          </p>
+        ) : (
+          <p className="text-base font-medium tracking-wide leading-normal text-center">
+            Already have an account? Sign Up
+          </p>
+        )}
       </div>
     </>
   );

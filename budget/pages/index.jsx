@@ -17,6 +17,10 @@ import { Bar } from "react-chartjs-2";
 import { faker } from "@faker-js/faker";
 import { onAuthStateChanged } from "@/utils/auth";
 import { useState, useEffect } from "react";
+import { db } from "@/utils/firebaseService";
+import { collection, getDoc, doc } from "firebase/firestore";
+import { logout } from "../utils/auth.js";
+import { useRouter } from "next/router";
 
 ChartJS.register(
   CategoryScale,
@@ -70,10 +74,21 @@ const data = {
 
 export default function Home() {
   const [user, setUser] = useState(null);
+  const Router = useRouter();
 
   useEffect(() => {
-    onAuthStateChanged((user) => setUser(!!user));
-    console.log(user);
+    (async () => {
+      onAuthStateChanged(async (user) => {
+        if (!user ) {
+          Router.push("/login");
+        }
+        const docSnap = await getDoc(doc(db, "users", user.uid));
+        // setExpenses(arr);
+
+        console.log(docSnap.data());
+        setUser(docSnap.data());
+      });
+    })();
   }, []);
   return (
     <>
@@ -88,6 +103,7 @@ export default function Home() {
           <div className="flex space-x-2.5 items-center justify-start">
             {user && (
               <img
+                onClick={logout}
                 className="w-12 h-12 border rounded-full"
                 src="https://cdn.discordapp.com/avatars/720862118244515860/15460e9328036466028b68522ee422ab.png?size=1024"
               />
@@ -97,7 +113,7 @@ export default function Home() {
                 Welcome back
               </p>
               <p className="text-lg font-semibold tracking-wide leading-relaxed text-gray-800">
-                Bhavin Hao
+                {user && user.name}
               </p>
             </div>
           </div>
