@@ -39,12 +39,12 @@ const Layout = ({ children }) => {
             Invest
           </div>
         </div>
-        <div className="p-2">
+        <Link href="/goal" className="p-2">
           <div className="flex flex-col w-12 h-12 text-xs text-center items-center">
             <RiCalendarCheckLine size={24} />
             Goals
           </div>
-        </div>
+        </Link>
       </div>
     </div>
   );

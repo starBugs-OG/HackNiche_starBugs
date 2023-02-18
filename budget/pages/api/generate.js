@@ -9,7 +9,7 @@ const generateAction = async (req, res) => {
   // Run first prompt
   const baseCompletion = await openai.createCompletion({
     model: "text-davinci-003",
-    prompt: `Give me a json format file for ${req.body.goal} with the keys: name, amount, timeframe of ${req.body.time}, without any text or explanation before or after the code, with the amount in INR.\n`,
+    prompt: `Give me the amount for ${req.body.goal} in the timeframe of ${req.body.time}, without any text or explanation before or after the code, with the amount in INR.\n`,
     temperature: 0.7,
     max_tokens: 500,
   });
