@@ -10,7 +10,7 @@ import Link from "next/link";
 
 const Layout = ({ children }) => {
   return (
-    <div className="flex flex-col w-screen h-screen">
+    <div className="flex flex-col w-screen h-screen max-w-[400px]">
       <main className="w-full h-full p-5 overflow-y-scroll">{children}</main>
       <div className="flex w-full p-5 pb-2 items-center bg-white justify-between sticky bottom-1">
         <Link href="/" className="p-2">
